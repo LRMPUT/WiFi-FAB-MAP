@@ -101,7 +101,7 @@ int loadDataFile(std::string filePath,
 void preprocessDescs(cv::Mat& descs){
 	static constexpr int minVal = -110;
 	static constexpr int maxVal = 0;
-	static constexpr int stepVal = 5;
+	static constexpr int stepVal = 10;
 
 	descs -= Scalar(minVal);
 	Mat notFoundMask = (descs == 100 - minVal);
@@ -114,7 +114,9 @@ void preprocessDescs(cv::Mat& descs){
 			if(fabs(descs.at<float>(d, v)) > eps){
 				float val = descs.at<float>(d, v);
 				int bin = val/stepVal;
-				extDescs.at<float>(d, v * binsPerDesc + bin) = 1.0;
+				for(int b = 0; b <= bin; ++b){
+					extDescs.at<float>(d, v * binsPerDesc + b) = 1.0;
+				}
 //				cout << "val = " << val << endl;
 //				cout << "index = " << v * binsPerDesc + bin << endl;
 			}
