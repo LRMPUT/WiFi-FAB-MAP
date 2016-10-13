@@ -77,7 +77,7 @@ ChowLiuOptions:
    # in necessary information being discarded and the tree not being created.
    #A threshold of 0 takes longer and may fail due to memory requirements
 
-   Train: 1
+   Train: 0
    LowerInfoBound: 0.0005
 
 #---------------------------------------------------------------------------
@@ -92,8 +92,8 @@ openFabMapOptions:
 
    #Detector Model
 
-   PzGe: 0.39
-   PzGne: 0.05
+   PzGe: 0.10
+   PzGne: 0.00005
 
    #The method to calculate the likelihood of a 'new location'
    #Note, FAB-MAP2.0 cannot use mean-field
