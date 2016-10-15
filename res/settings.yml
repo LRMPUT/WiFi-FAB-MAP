@@ -92,8 +92,8 @@ openFabMapOptions:
 
    #Detector Model
 
-   PzGe: 0.10
-   PzGne: 0.00005
+   PzGe: 0.39005
+   PzGne: 0.000816887
 
    #The method to calculate the likelihood of a 'new location'
    #Note, FAB-MAP2.0 cannot use mean-field
@@ -104,7 +104,7 @@ openFabMapOptions:
 
    #if using "sampled" method how many samples from training data to use
 
-   NumSamples: 8000
+   NumSamples: 800
 
    # The option to switch off FabMap's feature dependency model (Chow-Liu tree)
    # in the likelihood calculations

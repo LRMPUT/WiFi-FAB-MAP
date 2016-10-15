@@ -26,6 +26,7 @@ add_library(fabmap
 			
 
 set(WiFiFABMAP_SOURCES
+	src/Evaluation.cpp
 	src/main.cpp)
 add_executable(wififabmap
 				${WiFiFABMAP_SOURCES})
