@@ -428,7 +428,7 @@ int main(int argc, char * argv[]){
 		static constexpr float pzgneStep = -0.05;
 		static constexpr float pzgneStop = -10;
 
-		static constexpr int maxThreads = 8;
+		static constexpr int maxThreads = 7;
 
 		float bestScore = 0.0;
 		float bestPzge, bestPzgne;
