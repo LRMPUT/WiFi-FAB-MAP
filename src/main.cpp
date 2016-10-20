@@ -1,3 +1,25 @@
+/*
+	Copyright (c) 2016,	Mobile Robots Lab Team:
+	-Michal Nowicki (michal.nowicki [at] put.poznan.pl),
+	-Jan Wietrzykowski (jan.wietrzykowski [at] put.poznan.pl).
+	Poznan University of Technology
+	All rights reserved.
+
+	This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 
 #include <list>
 #include <map>
@@ -111,8 +133,8 @@ int loadDataFileClust(std::string filePath,
 		cout << "Error - could not open file: " << filePath << endl;
 	}
 	string tmp;
-	// discard first line with headers
-	getline(dataFile, tmp);
+//	// discard first line with headers
+//	getline(dataFile, tmp);
 	while(!dataFile.eof() && !dataFile.fail()){
 //		cout << "descs.rows = " << descs.rows << endl;
 
@@ -350,7 +372,7 @@ int main(int argc, char * argv[]){
 		fsChowLiu.release();
 	}
 
-	static constexpr bool tuneParams = true;
+	static constexpr bool tuneParams = false;
 	if(tuneParams){
 		// random permutation for splitting training and validation set
 		std::default_random_engine gen;
@@ -539,6 +561,8 @@ int main(int argc, char * argv[]){
 //			cout << testDescs.row(d) << endl;
 //		}
 
+//		cout << "trainPoses[180] = " << trainPoses[180] << endl;
+
 		cout << "Assigning train clusters" << endl;
 
 		assignClusters(trainPoses,
@@ -555,6 +579,8 @@ int main(int argc, char * argv[]){
 		int correct;
 		int incorrect;
 		int unrec;
+
+//		cout << "trainPoses[180] = " << trainPoses[180] << endl;
 
 		shared_ptr<EvaluationThread> evThread(new EvaluationThread(trainEnvDescs,
 																	trainDescs,
@@ -580,6 +606,7 @@ int main(int argc, char * argv[]){
 
 		ofstream matchedIdxsFile("matches.log");
 		for(int i = 0; i < matchedTestIdxs.size(); ++i){
+//			cout << "matchedTestIdxs[" << i << "] = " << matchedTestIdxs[i] << ", p1 = " << testPoses[i] << ", p2 = " << trainPoses[matchedTestIdxs[i]] << endl;
 			matchedIdxsFile << matchedTestIdxs[i] << endl;
 		}
 	}
