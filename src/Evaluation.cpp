@@ -27,7 +27,7 @@
 #include "openfabmap.hpp"
 
 using namespace std;
-using namespace cv;
+//using namespace cv;
 
 EvaluationThread::EvaluationThread(cv::Mat itrainEnvDescs,
 				cv::Mat itrainDescs,

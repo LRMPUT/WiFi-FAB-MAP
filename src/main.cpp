@@ -35,7 +35,7 @@
 #include "Evaluation.hpp"
 
 using namespace std;
-using namespace cv;
+//using namespace cv;
 
 static constexpr int descSize = 520;
 static constexpr float eps = 1e-6;
@@ -76,15 +76,15 @@ int loadDataFile(std::string filePath,
 	getline(dataFile, tmp);
 	while(!dataFile.eof() && !dataFile.fail()){
 //		cout << "descs.rows = " << descs.rows << endl;
-
-		Mat curDesc(1, descSize, CV_32FC1, Scalar(0));
+        
+        cv::Mat curDesc(1, descSize, CV_32FC1, cv::Scalar(0));
 		for(int d = 0; d < descSize && !dataFile.fail(); ++d){
 			getline(dataFile, tmp, ',');
 			if(!dataFile.fail()){
 				curDesc.at<float>(d) = stoi(tmp);
 			}
 		}
-		Point2f curPose;
+        cv::Point2f curPose;
 		if(!dataFile.fail()){
 			getline(dataFile, tmp, ',');
 //			cout << "tmp = " << tmp << endl;
@@ -137,15 +137,15 @@ int loadDataFileClust(std::string filePath,
 //	getline(dataFile, tmp);
 	while(!dataFile.eof() && !dataFile.fail()){
 //		cout << "descs.rows = " << descs.rows << endl;
-
-		Mat curDesc(1, descSize, CV_32FC1, Scalar(0));
+        
+        cv::Mat curDesc(1, descSize, CV_32FC1, cv::Scalar(0));
 		for(int d = 0; d < descSize && !dataFile.fail(); ++d){
 			getline(dataFile, tmp, ',');
 			if(!dataFile.fail()){
 				curDesc.at<float>(d) = stoi(tmp);
 			}
 		}
-		Point2f curPose;
+        cv::Point2f curPose;
 		if(!dataFile.fail()){
 			getline(dataFile, tmp, ',');
 //			cout << "tmp = " << tmp << endl;
@@ -211,11 +211,11 @@ void preprocessDescs(cv::Mat& descs){
 	static constexpr int stepVal = 5;
 	static constexpr int notFoundVal = 100;
 
-	descs -= Scalar(minVal);
+	descs -= cv::Scalar(minVal);
 //	Mat notFoundMask = (descs == notFoundVal - minVal);
 //	descs.setTo(Scalar(0), notFoundMask);
 	int binsPerDesc = ((maxVal - minVal)/stepVal);
-	Mat extDescs(descs.rows, binsPerDesc * descs.cols, CV_32FC1, Scalar(0));
+    cv::Mat extDescs(descs.rows, binsPerDesc * descs.cols, CV_32FC1, cv::Scalar(0));
 	for(int d = 0; d < descs.rows; ++d){
 		for(int v = 0; v < descs.cols; ++v){
 //			cout << "v = " << v << endl;
@@ -243,9 +243,9 @@ void convertToMat(const std::vector<cv::Point2f>& src,
 					cv::Mat& dst)
 {
 	static constexpr float levelSep = 100;
-	dst = Mat(0, 3, CV_32FC1, Scalar(0));
+	dst = cv::Mat(0, 3, CV_32FC1, cv::Scalar(0));
 	for(int i = 0; i < src.size(); ++i){
-		dst.push_back(Mat(Matx13f(src[i].x, src[i].y, srcLevel[i]*levelSep)));
+		dst.push_back(cv::Mat(cv::Matx13f(src[i].x, src[i].y, srcLevel[i]*levelSep)));
 	}
 }
 
@@ -257,15 +257,15 @@ void assignClusters(const std::vector<cv::Point2f>& srcPoses,
 					std::vector<int>& dstClust,
 					float distEps)
 {
-	Mat srcPosesMat;
-	Mat dstPosesMat;
+    cv::Mat srcPosesMat;
+    cv::Mat dstPosesMat;
 	cout << "Converting to MatVector" << endl;
 	convertToMat(srcPoses, srcFloors, srcPosesMat);
 	convertToMat(dstPoses, dstFloors, dstPosesMat);
 //	cout << "srcPosesMat = " << srcPosesMat << endl;
 //	cout << "dstPosesMat = " << dstPosesMat << endl;
-	std::vector<DMatch> matches;
-	BFMatcher matcher;
+	std::vector<cv::DMatch> matches;
+    cv::BFMatcher matcher;
 	cout << "Matching" << endl;
 	matcher.match(dstPosesMat, srcPosesMat, matches);
 	dstClust = vector<int>(dstPoses.size(), -1);
@@ -357,14 +357,14 @@ int main(int argc, char * argv[]){
 
 		//save the resulting tree
 		std::cout <<"Saving Chow-Liu Tree" << std::endl;
-		FileStorage fsChowLiu(fsSettings["FilePaths"]["ChowLiuTree"], cv::FileStorage::WRITE);
+        cv::FileStorage fsChowLiu(fsSettings["FilePaths"]["ChowLiuTree"], cv::FileStorage::WRITE);
 		fsChowLiu << "ChowLiuTree" << clTree;
 		fsChowLiu.release();
 	}
 	else{
 		//load a chow-liu tree
 		std::cout << "Loading Chow-Liu Tree" << std::endl;
-		FileStorage fsChowLiu(fsSettings["FilePaths"]["ChowLiuTree"], cv::FileStorage::READ);
+        cv::FileStorage fsChowLiu(fsSettings["FilePaths"]["ChowLiuTree"], cv::FileStorage::READ);
 		fsChowLiu["ChowLiuTree"] >> clTree;
 		if (clTree.empty()) {
 			std::cout << (string)fsSettings["FilePaths"]["ChowLiuTree"] << ": Chow-Liu tree not found" << std::endl;
